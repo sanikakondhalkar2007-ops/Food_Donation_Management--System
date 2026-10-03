@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+
+<div class="form-box">
+
+    <h1>Create Account</h1>
+
+    <form method="POST">
+
+        <label>Name</label>
+
+        <input type="text"
+               name="name"
+               placeholder="Enter your name"
+               required>
+
+
+        <label>Email</label>
+
+        <input type="email"
+               name="email"
+               placeholder="Enter your email"
+               required>
+
+
+        <label>Password</label>
+
+        <input type="password"
+               name="password"
+               placeholder="Enter password"
+               required>
+
+
+        <label>Select Role</label>
+
+        <select name="role" required>
+
+            <option value="donor">
+                Donor
+            </option>
+
+            <option value="receiver">
+                Receiver
+            </option>
+
+        </select>
+
+
+        <button type="submit">
+            Register
+        </button>
+
+    </form>
+
+
+    <p>
+        Already have an account?
+
+        <a href="{{ url_for('login') }}">
+            Login
+        </a>
+
+    </p>
+
+</div>
+
+{% endblock %}

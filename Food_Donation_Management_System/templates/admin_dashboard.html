@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+Receiver Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h1>Welcome, {{ session.get('user_name') }}!</h1>
+
+<p>
+    View available food donations and claim food.
+</p>
+
+
+<h2>Available Food</h2>
+
+
+{% if donations %}
+
+<div class="cards">
+
+    {% for donation in donations %}
+
+    <div class="card">
+
+        <h2>
+            {{ donation['food_name'] }}
+        </h2>
+
+        <p>
+            <strong>Quantity:</strong>
+            {{ donation['quantity'] }}
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            {{ donation['description'] }}
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            {{ donation['location'] }}
+        </p>
+
+        <p>
+            <strong>Donor:</strong>
+            {{ donation['donor_name'] }}
+        </p>
+
+
+        <a href="{{ url_for('claim_donation',
+                            donation_id=donation['id']) }}"
+           class="btn">
+
+            Claim Food
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<p>
+    No food donations are currently available.
+</p>
+
+{% endif %}
+
+{% endblock %}

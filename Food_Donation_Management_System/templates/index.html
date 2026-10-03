@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home - Food Donation System
+{% endblock %}
+
+{% block content %}
+
+<div class="hero">
+
+    <h1>Food Donation Management System</h1>
+
+    <p>
+        Connecting food donors with people and organizations
+        who need food.
+    </p>
+
+    <div class="buttons">
+
+        <a href="{{ url_for('register') }}" class="btn">
+            Get Started
+        </a>
+
+        <a href="{{ url_for('login') }}" class="btn secondary">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="cards">
+
+    <div class="card">
+
+        <h2>🍱 Donate Food</h2>
+
+        <p>
+            Donors can register and donate surplus food
+            to people in need.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>🤝 Receive Food</h2>
+
+        <p>
+            Receivers can view available food donations
+            and claim them.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>📊 Manage</h2>
+
+        <p>
+            Admin can monitor users and food donations
+            through the dashboard.
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

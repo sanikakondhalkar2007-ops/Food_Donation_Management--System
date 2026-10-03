@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Food Donation Management System{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Food Donation System
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{{ url_for('index') }}">Home</a>
+
+            {% if session.get('user_id') %}
+
+                {% if session.get('role') == 'donor' %}
+                    <a href="{{ url_for('donor_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('donate_food') }}">Donate Food</a>
+                {% endif %}
+
+                {% if session.get('role') == 'receiver' %}
+                    <a href="{{ url_for('receiver_dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('donations') }}">Available Food</a>
+                {% endif %}
+
+                {% if session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+                {% endif %}
+
+                <a href="{{ url_for('logout') }}">Logout</a>
+
+            {% else %}
+
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © 2026 Food Donation Management System
+        </p>
+
+    </footer>
+
+</body>
+
+</html>

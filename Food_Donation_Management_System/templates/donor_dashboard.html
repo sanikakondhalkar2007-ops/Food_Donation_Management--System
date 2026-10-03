@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+Donor Dashboard
+{% endblock %}
+
+{% block content %}
+
+<h1>Welcome, {{ session.get('user_name') }}!</h1>
+
+<p>
+    This is your Donor Dashboard.
+</p>
+
+
+<div class="dashboard-buttons">
+
+    <a href="{{ url_for('donate_food') }}"
+       class="btn">
+        + Donate Food
+    </a>
+
+</div>
+
+
+<h2>My Food Donations</h2>
+
+
+{% if donations %}
+
+<div class="table-container">
+
+<table>
+
+    <tr>
+
+        <th>Food</th>
+        <th>Quantity</th>
+        <th>Description</th>
+        <th>Location</th>
+        <th>Status</th>
+
+    </tr>
+
+
+    {% for donation in donations %}
+
+    <tr>
+
+        <td>
+            {{ donation['food_name'] }}
+        </td>
+
+        <td>
+            {{ donation['quantity'] }}
+        </td>
+
+        <td>
+            {{ donation['description'] }}
+        </td>
+
+        <td>
+            {{ donation['location'] }}
+        </td>
+
+        <td>
+            {{ donation['status'] }}
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+</div>
+
+{% else %}
+
+<p>
+    You have not donated any food yet.
+</p>
+
+{% endif %}
+
+{% endblock %}

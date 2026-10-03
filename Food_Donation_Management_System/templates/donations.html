@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+Available Donations
+{% endblock %}
+
+{% block content %}
+
+<h1>Available Food Donations</h1>
+
+
+{% if donations %}
+
+<div class="cards">
+
+    {% for donation in donations %}
+
+    <div class="card">
+
+        <h2>
+            {{ donation['food_name'] }}
+        </h2>
+
+        <p>
+            <strong>Quantity:</strong>
+            {{ donation['quantity'] }}
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            {{ donation['description'] }}
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            {{ donation['location'] }}
+        </p>
+
+        <p>
+            <strong>Donor:</strong>
+            {{ donation['donor_name'] }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ donation['status'] }}
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<p>
+    No food donations are currently available.
+</p>
+
+{% endif %}
+
+{% endblock %}
