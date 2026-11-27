@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+import os
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = "food_donation_secret_key"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+if not app.secret_key:
+    raise RuntimeError("Set the FLASK_SECRET_KEY environment variable before starting the app.")
 
 DATABASE = "database.db"
 
@@ -44,24 +47,35 @@ def init_db():
         )
     """)
 
-    # Create default admin account
-    admin = connection.execute(
-        "SELECT * FROM users WHERE email = ?",
-        ("admin@gmail.com",)
-    ).fetchone()
+    # Provision an admin only from private deployment configuration.
+    admin_email = os.environ.get("ADMIN_EMAIL")
+    admin_password = os.environ.get("ADMIN_PASSWORD")
+    if bool(admin_email) != bool(admin_password):
+        connection.close()
+        raise RuntimeError("Set both ADMIN_EMAIL and ADMIN_PASSWORD, or leave both unset.")
 
-    if not admin:
+    if admin_email and admin_password:
         connection.execute(
             """
             INSERT INTO users (name, email, password, role)
             VALUES (?, ?, ?, ?)
+            ON CONFLICT(email) DO UPDATE SET
+                name = excluded.name,
+                password = excluded.password,
+                role = excluded.role
             """,
             (
                 "Administrator",
-                "admin@gmail.com",
-                generate_password_hash("admin123"),
+                admin_email,
+                generate_password_hash(admin_password),
                 "admin"
             )
+        )
+    else:
+        # Remove the old publicly documented demo account from existing databases.
+        connection.execute(
+            "DELETE FROM users WHERE email = ? AND role = 'admin'",
+            ("admin@gmail.com",)
         )
 
     connection.commit()
@@ -347,7 +361,10 @@ def admin_dashboard():
     )
 
 
+# Initialize the schema and configured admin for both direct and WSGI launches.
+init_db()
+
+
 # Run application
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
